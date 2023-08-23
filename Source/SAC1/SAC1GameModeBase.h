@@ -13,5 +13,9 @@ UCLASS()
 class SAC1_API ASAC1GameModeBase : public AGameModeBase
 {
 	GENERATED_BODY()
+
+public:
+	ASAC1GameModeBase();
+
 	
 };

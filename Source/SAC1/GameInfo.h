@@ -2,7 +2,7 @@
 
 #pragma once
 
-#include "CoreMinimal.h"
+#include "EngineMinimal.h"
 #include "UObject/NoExportTypes.h"
 #include "GameInfo.generated.h"
 
