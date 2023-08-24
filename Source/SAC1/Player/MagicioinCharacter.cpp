@@ -17,15 +17,19 @@ AMagicioinCharacter::AMagicioinCharacter()
 		GetMesh()->SetSkeletalMesh(MeshAsset.Object);
 	}
 
+	//Animation Blueprint 클래스 레퍼런스를 얻어온다.
+	static ConstructorHelpers::FClassFinder <UAnimInstance> AnimClass(TEXT("/Script/Engine.AnimBlueprint'/Game/Player/AB_Magicion.AB_Magicion_C'"));  
 	
-	//캡슐의 절반높이는 기본 88로 되어있지만 메쉬의 키가 커서 90로 설정한다.
+	if (AnimClass.Succeeded())
+		GetMesh()->SetAnimInstanceClass(AnimClass.Class);
+
+	//캡슐의 절반높이는 기본 88로 되어있지만 메쉬의 키가 커서 92로 설정한다.
 	GetCapsuleComponent()->SetCapsuleHalfHeight(92.f);
 	
 	//캡슐의 절반높이가 92로 설정되었기 때문에 기본 메시 출력은 
 	//캡슐의 가운데를 발로 밟고 옆을 바라보게 하여 출력되어 있으므로
 	//캡슐의 절반높이인 92만큼 아래로 내려준다.
 	GetMesh()->SetRelativeLocation(FVector(0.0, 0.0, -92.0));
-
 
 	//메시가 전방을 바라보게 회전한다.
 	GetMesh()->SetRelativeRotation(FRotator(0.0,-90.0,0.0));

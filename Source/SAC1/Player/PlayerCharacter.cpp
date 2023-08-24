@@ -117,7 +117,7 @@ void APlayerCharacter::UpDownPitch (float Scale)
 
 	}
 
-	//LOGSTRING(TEXT("aaa"));
+	
 }
 
 void APlayerCharacter::CameraZoom(float Scale)
