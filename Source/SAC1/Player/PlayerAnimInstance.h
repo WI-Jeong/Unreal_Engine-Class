@@ -26,6 +26,25 @@ class SAC1_API UPlayerAnimInstance : public UAnimInstance
 
 public:
 	UPlayerAnimInstance(); 
+	
+protected:
+	UPROPERTY(Category = Camera, VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
+	float mMoveSpeed;
+
+	UPROPERTY(Category = Camera, VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
+	EPlayerAnimType mAnimType;
+
+	UPROPERTY(Category = Camera, VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
+	bool	mOnGround;
+
+public:
+	void ChangeAnim(EPlayerAnimType AnimType)
+	{
+		mAnimType = AnimType;
+	}
+
+
+
 
 public:
 	virtual void NativeInitializeAnimation();
@@ -39,5 +58,18 @@ public:
 	virtual void NativeUninitializeAnimation();
 
 	virtual void NativeBeginPlay();
+
+public:
+
+	//노티파이 함수는 리턴타입은 void고 
+	//AnimNotify_노티파이이름()의 형태로 함수를 제작해야한다.
+	UFUNCTION()
 	
+	void AnimNotify_TransitionFall(); 
+
+	UFUNCTION()
+
+	void AnimNotify_FallLandEnd();
+
+		
 };

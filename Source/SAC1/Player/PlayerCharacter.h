@@ -24,6 +24,8 @@ protected:
 
 	bool mCameraRotationEnable;
 
+	TObjectPtr<class UPlayerAnimInstance> mPlayerAnim;
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
