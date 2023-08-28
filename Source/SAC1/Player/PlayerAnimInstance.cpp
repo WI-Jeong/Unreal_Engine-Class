@@ -16,6 +16,10 @@ UPlayerAnimInstance::UPlayerAnimInstance()
 
 	mAttackIndex = 0;
 
+	mFallLandPositon = 0.14f;
+
+	mCanJump = true;
+
 }
 void UPlayerAnimInstance::AttackT()
 {
@@ -36,6 +40,33 @@ void UPlayerAnimInstance::AttackT()
 	mAttackIndex = (mAttackIndex + 1) % mAttackMontage.Num();
 
 	 
+}
+
+void UPlayerAnimInstance::Jump()
+{
+	if (Montage_IsPlaying(mFallRecovery))
+	{
+		mFallRecoveryAdditive = 0.f;
+		Montage_Stop(0.1f, mFallRecovery);
+	}
+
+	mCanJump = false;
+
+	/*if (mAnimType == EPlayerAnimType::Fall)
+	{
+	   mFallRecoveryAdditive = 0.f;
+
+	   if (Montage_IsPlaying(mFallRecovery))
+		  Montage_Stop(0.1f, mFallRecovery);
+	}*/
+	
+	mAnimType = EPlayerAnimType::Jump;
+
+}
+
+bool UPlayerAnimInstance::CanJump()
+{
+	return mCanJump;
 }
 
 void UPlayerAnimInstance::NativeInitializeAnimation()
@@ -146,6 +177,10 @@ void UPlayerAnimInstance::AnimNotify_FallLandEnd()
 		Montage_Play(mFallRecovery);
 
 	}
+
+	mCanJump = true;
+
+	LOG(TEXT("FALL LAND"));
 
 }
 

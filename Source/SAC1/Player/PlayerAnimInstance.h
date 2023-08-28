@@ -46,9 +46,13 @@ protected:
 	UPROPERTY(Category = Data, EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	TArray< TObjectPtr<UAnimMontage>>	mAttackMontage;
 
+	UPROPERTY(Category = Data, VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
+	float mFallLandPositon;
+
+
 	bool mAttackEnable;
 	int32 mAttackIndex;
-
+	bool mCanJump;
 
 
 public:
@@ -58,9 +62,8 @@ public:
 	}
 
 	void AttackT();
-
-
-
+	void Jump();
+	bool CanJump(); 
 
 public:
 

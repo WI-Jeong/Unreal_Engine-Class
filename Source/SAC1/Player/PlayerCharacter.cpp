@@ -22,6 +22,10 @@ APlayerCharacter::APlayerCharacter()
 	mCamera->SetupAttachment(mSpringArm);
 
 	mCameraRotationEnable = false;
+
+	GetCapsuleComponent()->SetCollisionProfileName(TEXT("Player"));
+	//GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+	GetCapsuleComponent()->OnComponentHit
 }
 
 // Called when the game starts or when spawned
@@ -148,10 +152,11 @@ void APlayerCharacter::RotationCameraReleased()
 
 void APlayerCharacter::Jumpkey()
 {
-	if (CanJump()) //점프 가능 상태인지 체크한다.
+	if (CanJump()&&mPlayerAnim->CanJump()) //점프 가능 상태인지 체크한다.
 	{
 		Jump();
-		mPlayerAnim->ChangeAnim(EPlayerAnimType::Jump);
+		mPlayerAnim->Jump();
+		//mPlayerAnim->ChangeAnim(EPlayerAnimType::Jump);
 	}
 }
 
