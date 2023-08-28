@@ -157,5 +157,7 @@ void APlayerCharacter::Jumpkey()
 
 void APlayerCharacter::Attack()
 {
+	mPlayerAnim->AttackT();
 }
 
+ 

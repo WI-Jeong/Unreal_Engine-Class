@@ -9,6 +9,33 @@ UPlayerAnimInstance::UPlayerAnimInstance()
 	mAnimType = EPlayerAnimType::Default;
 
 	mOnGround = false;
+
+	mFallRecoveryAdditive = 0.f; 
+
+	mAttackEnable = true;
+
+	mAttackIndex = 0;
+
+}
+void UPlayerAnimInstance::AttackT()
+{
+	//공격 가능 상태가 true이고 현재 공격 몽타주가 재생가능해야한다.
+	if (!mAttackEnable || Montage_IsPlaying(mAttackMontage[mAttackIndex]))
+		return;
+
+	//공격불가능상태로 만들어준다.
+	mAttackEnable = false;
+
+	//공격모션을 처음부터 재생시킬 수 잇도록한다.
+	Montage_SetPosition(mAttackMontage[mAttackIndex], 0.f);
+
+	//몽타주를 재생시킨다.
+	Montage_Play(mAttackMontage[mAttackIndex]);
+
+	//배열.num() 배열의 수
+	mAttackIndex = (mAttackIndex + 1) % mAttackMontage.Num();
+
+	 
 }
 
 void UPlayerAnimInstance::NativeInitializeAnimation()
@@ -38,6 +65,34 @@ void UPlayerAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 			mMoveSpeed = Movement->Velocity.Length(); 
 
 			mOnGround = Movement->IsMovingOnGround();
+
+			mFallRecoveryAdditive = 0.f;
+
+			/*
+			* 1. 땅을 밟고 있는 상태가 아니다.
+			* 2. 현재 동작하는 애니메이션이 점프가 아니다.
+			* 3. 현재 동작하는 애니메이션이 Fall이 아니다.
+			* 
+			*/
+
+			if (!mOnGround && mAnimType != EPlayerAnimType::Fall &&
+				mAnimType != EPlayerAnimType::Jump)
+			{
+				mAnimType = EPlayerAnimType::Fall;
+			}
+
+			//Default 상태가 아닐 경우 공격 불가능 상태로 만들어준다.
+			if (mAnimType != EPlayerAnimType::Default)
+			{
+				mAttackEnable = false;
+			}
+
+			//땅을 밝고 있는 상태이고 에니메이션이 fall일 경우 이제 막 땅을 밟게 되었다는 것이므로
+			//공격을 활성화한다.
+			if (mOnGround && mAnimType == EPlayerAnimType::Fall)
+			{
+				mAttackEnable = true;
+			}
 		}
 	}
 
@@ -78,4 +133,38 @@ void UPlayerAnimInstance::AnimNotify_TransitionFall()
 void UPlayerAnimInstance::AnimNotify_FallLandEnd()
 {
 	mAnimType = EPlayerAnimType::Default;
+
+	mFallRecoveryAdditive = 1.f;
+
+	//현재 몽타주가 재생되고 있는지 판단한다.
+	if (!Montage_IsPlaying(mFallRecovery))
+	{
+		//리커버리 모션을 처음부터 재생시킬 수 있도록 한다.
+		Montage_SetPosition(mFallRecovery, 0.f);
+
+		//몽타주를 재생시킨다.
+		Montage_Play(mFallRecovery);
+
+	}
+
+}
+
+void UPlayerAnimInstance::AnimNotify_JumpRecoveryEnd()
+{
+	mFallRecoveryAdditive = 0.f;
+}
+
+void UPlayerAnimInstance::AnimNotify_Attack1() 
+{ 
+
+}
+
+void UPlayerAnimInstance::AnimNotify_AttackEnable()
+{
+	mAttackEnable = true;
+}
+
+void UPlayerAnimInstance::AnimNotify_AttackEnd()
+{
+	mAttackIndex = 0;
 }
