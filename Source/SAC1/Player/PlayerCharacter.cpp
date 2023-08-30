@@ -24,8 +24,30 @@ APlayerCharacter::APlayerCharacter()
 	mCameraRotationEnable = false;
 
 	GetCapsuleComponent()->SetCollisionProfileName(TEXT("Player"));
+
+	// 오버랩 이벤트 생성을 켜준다.
+	GetCapsuleComponent()->SetGenerateOverlapEvents(true);
+
+	// 시뮬레이션 히트 이벤트 생성을 켜준다.
+	GetCapsuleComponent()->SetNotifyRigidBodyCollision(true);
+
+	// OnComponentHit : Multicast + Dynamic 조합의 Delegate이다.
+	GetCapsuleComponent()->OnComponentHit.AddDynamic(this,
+		&APlayerCharacter::BodyHit);
+
+	GetCapsuleComponent()->OnComponentBeginOverlap.AddDynamic(this,
+		&APlayerCharacter::OverlapBegin);
+
+	GetCapsuleComponent()->OnComponentEndOverlap.AddDynamic(this,
+		&APlayerCharacter::OverlapEnd);
+
+	GetCapsuleComponent()->CanCharacterStepUpOn =
+		ECanBeCharacterBase::ECB_No;
+
 	//GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
-	GetCapsuleComponent()->OnComponentHit
+
+	GetMesh()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+
 }
 
 // Called when the game starts or when spawned
@@ -163,6 +185,26 @@ void APlayerCharacter::Jumpkey()
 void APlayerCharacter::Attack()
 {
 	mPlayerAnim->AttackT();
+}
+
+void APlayerCharacter::BodyHit(UPrimitiveComponent* HitComponent, 
+	AActor* OtherActor, UPrimitiveComponent* OtherComp, 
+	FVector NormalImpulse, const FHitResult& Hit)
+{
+	GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Red, 
+		FString::Printf(TEXT("Dest : %s"),*OtherActor->GetName()));
+}
+
+void APlayerCharacter::OverlapBegin(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+	GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Red,
+		FString::Printf(TEXT("BeginOverlap Dest : %s"), *OtherActor->GetName()));
+}
+
+void APlayerCharacter::OverlapEnd(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
+{
+	GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Red,
+		FString::Printf(TEXT("EndOverlap Dest : %s"), *OtherActor->GetName()));
 }
 
  

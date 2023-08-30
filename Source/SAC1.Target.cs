@@ -7,9 +7,9 @@ public class SAC1Target : TargetRules
 {
 	public SAC1Target(TargetInfo Target) : base(Target)
 	{
-		Type = TargetType.Game;
-		DefaultBuildSettings = BuildSettingsVersion.V2;
-
-		ExtraModuleNames.AddRange( new string[] { "SAC1" } );
-	}
+        Type = TargetType.Game;
+        DefaultBuildSettings = BuildSettingsVersion.V2;
+        IncludeOrderVersion = EngineIncludeOrderVersion.Unreal5_2;
+        ExtraModuleNames.Add("SAC1");
+    }
 }
