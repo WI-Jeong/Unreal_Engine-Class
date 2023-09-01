@@ -2,7 +2,7 @@
 
 
 #include "PlayerCharacter.h"
-#include "PlayerAnimInstance.h"
+
 
 // Sets default values
 APlayerCharacter::APlayerCharacter()
@@ -29,6 +29,8 @@ APlayerCharacter::APlayerCharacter()
 	GetCapsuleComponent()->SetGenerateOverlapEvents(true);
 
 	// 시뮬레이션 히트 이벤트 생성을 켜준다.
+	//물리적인 시뮬레이션이 일어날 때만 효과가 있다.
+	//일반 이동이나 일반적인 충돌에서는 의미가 없다.
 	GetCapsuleComponent()->SetNotifyRigidBodyCollision(true);
 
 	// OnComponentHit : Multicast + Dynamic 조합의 Delegate이다.
@@ -116,6 +118,11 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 void APlayerCharacter::MoveFront(float Scale)
 {
 	AddMovementInput(GetActorForwardVector(), Scale);
+
+	// Scale이 0이 아닌 경우는 이동키를 눌렀다는 것이므로 애니메이션을
+	// Default로 변경한다.
+	/*if (Scale != 0.f)
+		mPlayerAnim->ChangeAnim(EPlayerAnimType::Default);*/
 }
 
 void APlayerCharacter::MoveSide(float Scale)
@@ -205,6 +212,14 @@ void APlayerCharacter::OverlapEnd(UPrimitiveComponent* OverlappedComponent, AAct
 {
 	GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Red,
 		FString::Printf(TEXT("EndOverlap Dest : %s"), *OtherActor->GetName()));
+}
+
+void APlayerCharacter::Attack1()
+{
+}
+
+void APlayerCharacter::Attack2()
+{
 }
 
  

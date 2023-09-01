@@ -163,6 +163,7 @@ void UPlayerAnimInstance::AnimNotify_TransitionFall()
 
 void UPlayerAnimInstance::AnimNotify_FallLandEnd()
 {
+	
 	mAnimType = EPlayerAnimType::Default;
 
 	mFallRecoveryAdditive = 1.f;
@@ -189,9 +190,32 @@ void UPlayerAnimInstance::AnimNotify_JumpRecoveryEnd()
 	mFallRecoveryAdditive = 0.f;
 }
 
-void UPlayerAnimInstance::AnimNotify_Attack1() 
-{ 
 
+void UPlayerAnimInstance::AnimNotify_Attack() 
+{
+	LOG(TEXT("WWWW"));
+
+	APlayerCharacter* Player = Cast< APlayerCharacter>(TryGetPawnOwner());
+
+	// IsValid : 객체가 유효한지 판단한다.
+   // nullptr일 경우 유효한 객체가 아니다.
+	if (IsValid(Player))
+	{
+		Player->Attack1();
+	}
+}
+
+
+void UPlayerAnimInstance::AnimNotify_Attack2()
+{
+	APlayerCharacter* Player = Cast< APlayerCharacter>(TryGetPawnOwner());
+
+	// IsValid : 객체가 유효한지 판단한다.
+   // nullptr일 경우 유효한 객체가 아니다.
+	if (IsValid(Player))
+	{
+		Player->Attack2();
+	}
 }
 
 void UPlayerAnimInstance::AnimNotify_AttackEnable()
@@ -202,4 +226,25 @@ void UPlayerAnimInstance::AnimNotify_AttackEnable()
 void UPlayerAnimInstance::AnimNotify_AttackEnd()
 {
 	mAttackIndex = 0;
+}
+
+void UPlayerAnimInstance::AnimNotify_TeleportEnd()
+{
+	mAttackEnable = true;
+	mAnimType = EPlayerAnimType::Default;
+
+	APlayerCharacter* Player = Cast< APlayerCharacter>(TryGetPawnOwner());
+
+	// IsValid : 객체가 유효한지 판단한다.
+   // nullptr일 경우 유효한 객체가 아니다.
+	if (IsValid(Player))
+	{
+		UCharacterMovementComponent* Movement = Player->GetCharacterMovement();
+
+		if (IsValid(Movement))
+		{
+			Movement->MaxWalkSpeed = 600.f;
+		}
+
+	}
 }

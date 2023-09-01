@@ -16,4 +16,8 @@ class SAC1_API AMagicioinCharacter : public APlayerCharacter
 public:
 	AMagicioinCharacter();
 
+public:
+	virtual void Attack1();
+	virtual void Attack2();
+
 };

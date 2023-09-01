@@ -3,6 +3,7 @@
 #pragma once
 
 #include "../GameInfo.h"
+#include "PlayerAnimInstance.h"
 #include "GameFramework/Character.h"
 #include "PlayerCharacter.generated.h"
 
@@ -24,7 +25,13 @@ protected:
 
 	bool mCameraRotationEnable;
 
-	TObjectPtr<class UPlayerAnimInstance> mPlayerAnim;
+	TObjectPtr< UPlayerAnimInstance> mPlayerAnim;
+
+public:
+	void ChangeAnimation(EPlayerAnimType Type)
+	{
+		mPlayerAnim->ChangeAnim(Type);
+	}
 
 protected:
 	// Called when the game starts or when spawned
@@ -62,4 +69,8 @@ private:
 	UFUNCTION()
 	void OverlapEnd(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, 
 		UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
+
+public:
+	virtual void Attack1();
+	virtual void Attack2();
 };

@@ -5,6 +5,8 @@
 #include "EngineMinimal.h"
 #include "EngineGlobals.h"
 #include "Engine.h"
+#include "DrawDebugHelpers.h"
+
 #include "UObject/NoExportTypes.h"
 #include "GameInfo.generated.h"
 

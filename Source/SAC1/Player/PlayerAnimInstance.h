@@ -13,7 +13,8 @@ enum class EPlayerAnimType : uint8
 	Default,
 	Jump,
 	Fall,
-	Death 
+	Death,
+	Teleport
 };
 
 /**
@@ -99,7 +100,10 @@ public:
 
 
 	UFUNCTION()
-	void AnimNotify_Attack1 ();
+	void AnimNotify_Attack();
+
+	UFUNCTION()
+	void AnimNotify_Attack2();
 
 
 	UFUNCTION()
@@ -108,5 +112,8 @@ public:
 
 	UFUNCTION()
 	void AnimNotify_AttackEnd();
+
+	UFUNCTION()
+	void AnimNotify_TeleportEnd();
 
 };
