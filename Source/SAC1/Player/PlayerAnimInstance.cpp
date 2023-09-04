@@ -97,7 +97,7 @@ void UPlayerAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 
 			mOnGround = Movement->IsMovingOnGround();
 
-			mFallRecoveryAdditive = 0.f;
+			//mFallRecoveryAdditive = 0.f;
 
 			/*
 			* 1. 땅을 밟고 있는 상태가 아니다.
@@ -193,8 +193,6 @@ void UPlayerAnimInstance::AnimNotify_JumpRecoveryEnd()
 
 void UPlayerAnimInstance::AnimNotify_Attack() 
 {
-	LOG(TEXT("WWWW"));
-
 	APlayerCharacter* Player = Cast< APlayerCharacter>(TryGetPawnOwner());
 
 	// IsValid : 객체가 유효한지 판단한다.
