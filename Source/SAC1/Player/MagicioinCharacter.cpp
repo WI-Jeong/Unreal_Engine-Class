@@ -130,6 +130,7 @@ void AMagicioinCharacter::Attack2()
 	AProjectileBase* Projectile = GetWorld()->SpawnActor<AProjectileBase>(SocketLoc,
 		GetActorRotation(), ActorParam);
 
+	Projectile->SetMeshAsset(TEXT("/Script/Engine.StaticMesh'/Game/BlueprintTest/Sphere1.Sphere1'"));
 	Projectile->SetCollisionProfile(TEXT("PlayerProjectile"));
 }
 //
@@ -146,10 +147,11 @@ void AMagicioinCharacter::Attack3()
 		GetActorRotation(), ActorParam);
 
 
-	Projectile->SetParticleAsset(TEXT("/Script/Engine.ParticleSystem'/Game/BlueprintTest/P_AuraCircle_Temp.P_AuraCircle_Temp'"));
-	Projectile->SetAudioAsset(TEXT("/Script/Engine.SoundWave'/Game/Sound/1Up.1Up'"));
+	//이펙트중에 더블클릭해서 봤을 때 particle이 잇는게 있음. 그게 있는것들만 날아가는거 보임!!!!
+	Projectile->SetParticleAsset(TEXT("/Script/Engine.ParticleSystem'/Game/InfinityBladeEffects/Effects/FX_Skill_WeaponThrow/P_Skill_Throw_Fire_Proj_Hammer_Heroic.P_Skill_Throw_Fire_Proj_Hammer_Heroic'"));
+	Projectile->SetAudioAsset(TEXT("/Script/Engine.SoundWave'/Game/Sound/MainBgm.MainBgm'"));
 
 	Projectile->SetCollisionProfile(TEXT("PlayerProjectile"));
-
+	
 }
 //

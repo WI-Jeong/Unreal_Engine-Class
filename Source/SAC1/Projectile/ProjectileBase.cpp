@@ -12,15 +12,19 @@ AProjectileBase::AProjectileBase()
 	mBody = CreateDefaultSubobject< UBoxComponent>(TEXT("Body"));
 	mMesh = CreateDefaultSubobject< UStaticMeshComponent>(TEXT("Mesh"));
 	mMovement = CreateDefaultSubobject< UProjectileMovementComponent>(TEXT("Movement"));
-
+	
+	
+	
 	//
 	mParticle = CreateDefaultSubobject<UParticleSystemComponent>(TEXT("Particle"));
 	mAudio = CreateDefaultSubobject<UAudioComponent>(TEXT("Audio"));
-	SetRootComponent(mParticle);
-	mAudio->SetupAttachment(mParticle);
+	SetRootComponent(mBody);
+	//SetRootComponent(mParticle);
+	mAudio->SetupAttachment(mBody);
+	mParticle->SetupAttachment(mBody);
 	//
 
-	SetRootComponent(mBody);
+	
 	mMesh->SetupAttachment(mBody);
 
 	mMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
@@ -34,12 +38,14 @@ AProjectileBase::AProjectileBase()
 
 	mMovement->OnProjectileStop.AddDynamic(this, &AProjectileBase::ProjectileStop);
 
+	/*
 	static ConstructorHelpers::FObjectFinder<UStaticMesh> MeshAsset(TEXT("/Script/Engine.StaticMesh'/Game/BlueprintTest/Sphere1.Sphere1'"));
 	
 	if (MeshAsset.Succeeded())
 	{
 		mMesh->SetStaticMesh(MeshAsset.Object);
 	}
+	*/
 }
 
 // Called when the game starts or when spawned
@@ -85,7 +91,7 @@ void AProjectileBase::SetParticleAsset(const FString& Path)
 	{
 		mParticle->SetTemplate(Particle);
 		mParticle->OnSystemFinished.AddDynamic(this, &AProjectileBase::ParticleFinish);
-
+		LOG(TEXT("2222"));
 	}
 }
 
