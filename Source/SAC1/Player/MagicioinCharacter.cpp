@@ -3,6 +3,8 @@
 
 #include "MagicioinCharacter.h"
 #include "../Effect/DefaultEffect.h"
+#include "../Projectile/ProjectileBase.h"
+
 
 AMagicioinCharacter::AMagicioinCharacter()
 {
@@ -47,6 +49,7 @@ void AMagicioinCharacter::Attack1()
 	//격투게임같이 충돌 디테일하게 해야하는경우 주먹에도 충돌체를 따로 씌우고
 	//디테일하게 해줘야함..나중에 알려주신다함 
 	//주로 논타겟팅할 때 씀. 불특정다수에 공격 
+	//마우스로 몬스터 클릭해서 공격하면 굳이 충돌필요없다고 하심.
 
 	//sweep과 overlap2가지 종류로 나뉜다.
 	//여기에서 sweep과 overlap은 single과 multi2가지로 나뉜다.
@@ -58,10 +61,13 @@ void AMagicioinCharacter::Attack1()
 	1번 인자: FHitResult로 충돌된 결과를 이 인자에 저장해준다.
 	2번 인자: Start는 충돌 시작위치를 의미한다.
 	3번인자: End는 충돌 끝 위치를 의미한다.
-	4번 인자: 회전값ㅇ
+	4번 인자: 회전값을 넣어준다.
+	5번 인자: 충돌 채널을 넣어준다. 이 채널과 무시하는 프로파일을 가지고 있는 물체는 
+	충돌에서 제외된다.
+	6번 인자: 충돌 도형을 만들어준다.
 	*/
-	//현재 캐릭터의 위치에서 50cm앞을 시작점으로 잡아준다.
 
+	//현재 캐릭터의 위치에서 50cm앞을 시작점으로 잡아준다.
 	FVector Start = GetActorLocation() + GetActorForwardVector() * 50.f;
 
 	//끝점은 시작점으로부터 2m전방으로 잡아준다.
@@ -110,4 +116,18 @@ void AMagicioinCharacter::Attack1()
 
 void AMagicioinCharacter::Attack2()
 {
+	FActorSpawnParameters ActorParam;
+	ActorParam.SpawnCollisionHandlingOverride =
+		ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+
+	//소켓의 위치를 얻어온다. 소켓의 위치는 SkeletalMeshComponent를 이용해서
+	//얻어올 수 있다.
+
+	FVector SocketLoc = GetMesh()->GetSocketLocation(TEXT("hand_l_Projectile"));
+
+
+	AProjectileBase* Projectile = GetWorld()->SpawnActor<AProjectileBase>(SocketLoc,
+		GetActorRotation(), ActorParam);
+
+	Projectile->SetCollisionProfile(TEXT("PlayerProjectile"));
 }

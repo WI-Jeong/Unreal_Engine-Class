@@ -77,6 +77,6 @@ void ATrigger::OverlapBegin(UPrimitiveComponent* OverlappedComponent,
 
 	Effect->SetParticleAsset(TEXT("/Script/Engine.ParticleSystem'/Game/InfinityBladeEffects/Effects/FX_Ability/Defense/P_Shield_Spawn.P_Shield_Spawn'"));
 
-	Effect->SetAudioAsset(TEXT("/Script/Engine.SoundWave'/Game/Sound/Fire1.Fire1'"));
+	Effect->SetAudioAsset(TEXT("/ Script / Engine.SoundWave'/Game/Sound/water-step-02.water-step-02'"));
 }
 
