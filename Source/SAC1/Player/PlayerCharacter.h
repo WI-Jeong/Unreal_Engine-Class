@@ -73,4 +73,7 @@ private:
 public:
 	virtual void Attack1();
 	virtual void Attack2();
+	/// 
+	virtual void Attack3();
+	////
 };

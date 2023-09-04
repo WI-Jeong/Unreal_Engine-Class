@@ -13,8 +13,14 @@ AProjectileBase::AProjectileBase()
 	mMesh = CreateDefaultSubobject< UStaticMeshComponent>(TEXT("Mesh"));
 	mMovement = CreateDefaultSubobject< UProjectileMovementComponent>(TEXT("Movement"));
 
-	SetRootComponent(mBody);
+	//
+	mParticle = CreateDefaultSubobject<UParticleSystemComponent>(TEXT("Particle"));
+	mAudio = CreateDefaultSubobject<UAudioComponent>(TEXT("Audio"));
+	SetRootComponent(mParticle);
+	mAudio->SetupAttachment(mParticle);
+	//
 
+	SetRootComponent(mBody);
 	mMesh->SetupAttachment(mBody);
 
 	mMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
@@ -29,7 +35,7 @@ AProjectileBase::AProjectileBase()
 	mMovement->OnProjectileStop.AddDynamic(this, &AProjectileBase::ProjectileStop);
 
 	static ConstructorHelpers::FObjectFinder<UStaticMesh> MeshAsset(TEXT("/Script/Engine.StaticMesh'/Game/BlueprintTest/Sphere1.Sphere1'"));
-
+	
 	if (MeshAsset.Succeeded())
 	{
 		mMesh->SetStaticMesh(MeshAsset.Object);
@@ -69,5 +75,33 @@ void AProjectileBase::SetMeshAsset(const FString& Path)
 void AProjectileBase::SetCollisionProfile(const FName& Name)
 {
 	mBody->SetCollisionProfileName(Name);
+}
+
+void AProjectileBase::SetParticleAsset(const FString& Path)
+{
+	UParticleSystem* Particle = LoadObject< UParticleSystem>(nullptr, *Path);
+
+	if (IsValid(Particle))
+	{
+		mParticle->SetTemplate(Particle);
+		mParticle->OnSystemFinished.AddDynamic(this, &AProjectileBase::ParticleFinish);
+
+	}
+}
+
+void AProjectileBase::SetAudioAsset(const FString& Path)
+{
+	USoundBase* Sound = LoadObject< USoundBase>(nullptr, *Path);
+
+	if (IsValid(Sound))
+	{
+		mAudio->SetSound(Sound);
+		mAudio->Play();
+	}
+
+}
+
+void AProjectileBase::ParticleFinish(UParticleSystemComponent* System)
+{
 }
 

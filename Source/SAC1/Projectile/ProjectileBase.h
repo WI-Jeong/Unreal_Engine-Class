@@ -25,6 +25,13 @@ protected:
 	UPROPERTY(Category = Component, VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UProjectileMovementComponent> mMovement;
 
+	//
+	UPROPERTY(Category = Component, VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<UParticleSystemComponent> mParticle;
+
+	UPROPERTY(Category = Component, VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<UAudioComponent> mAudio;
+	//
 
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -40,4 +47,10 @@ public:
 public:
 	void SetMeshAsset(const FString& Path);
 	void SetCollisionProfile(const FName& Name);
+	void SetParticleAsset(const FString& Path);
+	void SetAudioAsset(const FString& Path);
+
+private:
+	UFUNCTION()
+	void ParticleFinish(UParticleSystemComponent* System);
 };

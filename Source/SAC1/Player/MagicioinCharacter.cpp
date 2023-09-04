@@ -23,6 +23,7 @@ AMagicioinCharacter::AMagicioinCharacter()
 	LOG(TEXT("Log Test"));
 
 
+
 	//Animation Blueprint 클래스 레퍼런스를 얻어온다.
 	static ConstructorHelpers::FClassFinder <UAnimInstance> AnimClass(TEXT("/Script/Engine.AnimBlueprint'/Game/Player/AB_Magicion.AB_Magicion_C'"));  
 	
@@ -106,7 +107,7 @@ void AMagicioinCharacter::Attack1()
 			FRotator::ZeroRotator, ActorParam);
 
 		
-		Effect->SetParticleAsset(TEXT("/Script/Engine.ParticleSystem'/Game/InfinityBladeEffects/Effects/FX_Ability/Defense/P_Shield_Spawn.P_Shield_Spawn'"));
+		Effect->SetParticleAsset(TEXT("/Script/Engine.StaticMesh'/Game/BlueprintTest/Sphere1.Sphere1'"));
 
 		Effect->SetAudioAsset(TEXT("/Script/Engine.SoundWave'/Game/Sound/Fire1.Fire1'"));
 
@@ -131,3 +132,24 @@ void AMagicioinCharacter::Attack2()
 
 	Projectile->SetCollisionProfile(TEXT("PlayerProjectile"));
 }
+//
+void AMagicioinCharacter::Attack3()
+{
+
+	FActorSpawnParameters ActorParam;
+	ActorParam.SpawnCollisionHandlingOverride =
+		ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+
+	FVector SocketLoc = GetMesh()->GetSocketLocation(TEXT("hand_r_Projectile"));
+
+	AProjectileBase* Projectile = GetWorld()->SpawnActor<AProjectileBase>(SocketLoc,
+		GetActorRotation(), ActorParam);
+
+
+	Projectile->SetParticleAsset(TEXT("/Script/Engine.ParticleSystem'/Game/BlueprintTest/P_AuraCircle_Temp.P_AuraCircle_Temp'"));
+	Projectile->SetAudioAsset(TEXT("/Script/Engine.SoundWave'/Game/Sound/1Up.1Up'"));
+
+	Projectile->SetCollisionProfile(TEXT("PlayerProjectile"));
+
+}
+//

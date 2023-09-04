@@ -216,6 +216,19 @@ void UPlayerAnimInstance::AnimNotify_Attack2()
 	}
 }
 
+//
+void UPlayerAnimInstance::AnimNotify_Attack3()
+{
+	APlayerCharacter* Player = Cast< APlayerCharacter>(TryGetPawnOwner());
+
+	// IsValid : 객체가 유효한지 판단한다.
+   // nullptr일 경우 유효한 객체가 아니다.
+	if (IsValid(Player))
+	{
+		Player->Attack3();
+	}
+}
+//
 void UPlayerAnimInstance::AnimNotify_AttackEnable()
 {
 	mAttackEnable = true;

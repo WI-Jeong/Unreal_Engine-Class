@@ -105,6 +105,10 @@ public:
 	UFUNCTION()
 	void AnimNotify_Attack2();
 
+	//
+	UFUNCTION()
+	void AnimNotify_Attack3();
+	//
 
 	UFUNCTION()
 	void AnimNotify_AttackEnable();
